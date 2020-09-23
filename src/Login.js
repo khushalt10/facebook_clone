@@ -3,12 +3,20 @@ import { auth } from './firebase'
 import React from 'react'
 import { provider } from './firebase'
 import './Login.css'
+import { useStateValue } from './StateProvider'
+import { actionTypes } from './reducer'
 
 function Login() {
+    const [{user}, dispatch] = useStateValue();
 
     const signIN = () => {
         auth.signInWithPopup(provider)
         .then(result => {
+            dispatch({
+                type: actionTypes.SET_USER,
+                user: result.user
+            })
+
             console.log(result)
         }).catch((err) => alert(err.message))
     }
